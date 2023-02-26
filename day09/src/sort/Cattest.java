@@ -18,6 +18,10 @@ public class Cattest {
         catList.add(fanfan);
         catList.add(maomao);
         System.out.println("排序前：");
+
+        for(Cat C:catList){
+            System.out.println(C.toString());
+        }
         Iterator var6 = catList.iterator();
 
         Cat cat;

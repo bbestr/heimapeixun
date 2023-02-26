@@ -5,8 +5,11 @@ import sort.NameCompator;
 import java.util.*;
 
 public class StudentMain {
-    public static void menu(List<Student> studentslist){
+    static List<Student> studentslist = new ArrayList<>();
+    Scanner sc = new Scanner(System.in);
 
+    public static void menu(List<Student> studentslist){
+        StudentMain studentMain = new StudentMain();
         Scanner sc = new Scanner(System.in);
         int c;
         while(true){
@@ -24,22 +27,22 @@ public class StudentMain {
                 switch (c){
 
                     case 1:
-                        StudentMain.addStudent(studentslist);
+                        studentMain.addStudent();
                         break;
                     case 2:
-                        StudentMain.deleteStudent(studentslist);
+                        studentMain.deleteStudent();
                         break;
                     case 3:
-                        StudentMain.showStudent(studentslist);
+                        studentMain.showStudent();
                         break;
                     case 4:
-                        StudentMain.updateStudent(studentslist);
+                        studentMain.updateStudent();
                         break;
                     case 5:
-                        StudentMain.sort(studentslist);
+                        studentMain.sort();
                         break;
                     case 6:
-                        StudentMain.searchByName(studentslist);
+                        studentMain.searchByName();
                         break;
                     case 0:
                         System.exit(0);
@@ -55,11 +58,10 @@ public class StudentMain {
 
         }
     }
-    private static void addStudent(List<Student> studentList) {
+    private void addStudent() {
 
         //存放现有学生id  添加时查重
-        Iterator it = studentList.iterator();
-        Scanner sc = new Scanner(System.in);
+        Iterator it = studentslist.iterator();
 
         String id = "";
 
@@ -95,13 +97,13 @@ public class StudentMain {
         String birthday = sc.next();
 
         Student student = new Student(id,name,sex,age,birthday);
-        studentList.add(student);
+        studentslist.add(student);
         System.out.println("添加成功!");
 
     }
 
-    public static void main(String[] args) {
-        List<Student> studentslist = new ArrayList<>();
+    public  static void main(String[] args) {
+
         Student stu1 = new Student("heima001","亚索","男",18,"1999-5-24");
         Student stu2 = new Student("heima002","瑞文","女",23,"1997-6-13");
         Student stu3 = new Student("heima003","盲仔","男",13,"2003-7-27");
@@ -114,9 +116,9 @@ public class StudentMain {
 
     }
 
-    public  static  void showStudent(List<Student> studentList){
-        Iterator it = studentList.iterator();
-        if(studentList.size() == 0){
+    public    void showStudent(){
+        Iterator it = studentslist.iterator();
+        if(studentslist.size() == 0){
             System.out.println("无学生信息!");
         }
         else{
@@ -129,41 +131,37 @@ public class StudentMain {
             }
         }
     }
-    public static void deleteStudent(List<Student> studentList){
-
-        Scanner sc1 = new Scanner(System.in);
+    public  void deleteStudent(){
         System.out.println("输入要删除的学生id:");
 
-        String deleteid = sc1.next();
+        String deleteid = sc.next();
 
-        int index = getIndex(studentList,deleteid);
+        int index = getIndex(deleteid);
 
         if (index == -1){
             System.out.println("不存在此id 删除失败");
         }else{
-            studentList.remove(index);
+            studentslist.remove(index);
             System.out.println("删除成功!!");
         }
 
 
     }
-    public  static  int getIndex(List<Student> studentList,String deleteid){
-        for (int i = 0; i < studentList.size(); i++) {
+    public    int getIndex(String id){
+        for (int i = 0; i < studentslist.size(); i++) {
 
-            if(deleteid.equals(studentList.get(i).getId())){
+            if(id.equals(studentslist.get(i).getId())){
                 return i;
             }
         }
         return -1;
 
     }
-    public static void updateStudent(List<Student> studentList) {
-
-        Scanner sc = new Scanner(System.in);
+    public  void updateStudent() {
         System.out.println("输入修改信息的学生学号:");
         String updateid = sc.next();
 
-        int index = getIndex(studentList,updateid);
+        int index = getIndex(updateid);
         if (index == -1){
             System.out.println("查无此人!");
         }
@@ -179,17 +177,16 @@ public class StudentMain {
 
             Student stu = new Student(updateid,name,sex,age,birthday);
 
-            studentList.set(index,stu);
+            studentslist.set(index,stu);
             System.out.println("修改成功!");
         }
     }
 
-    public static void searchByName(List<Student> studentList){
-        Scanner sc = new Scanner(System.in);
+    public  void searchByName(){
         System.out.println("输入想查询的学生姓名:");
         String name = sc.next();
 
-        Iterator it = studentList.iterator();
+        Iterator it = studentslist.iterator();
         Student student = new Student();
 
         while(it.hasNext()){
@@ -204,25 +201,23 @@ public class StudentMain {
         System.out.println("没找到!");
     }
 
-    public static void sort(List<Student> studentList){
+    public  void sort(){
 
-
-        Scanner sc = new Scanner(System.in);
         System.out.println("输入你要的排序(1,按名称 2,按年龄 3 按性别 4按学号):");
         int ans = sc.nextInt();
         switch (ans){
 
             case 1:
-                Collections.sort(studentList,new NameComparator());
+                Collections.sort(studentslist,new NameComparator());
                 break;
             case 2:
-                Collections.sort(studentList,new AgeComparator());
+                Collections.sort(studentslist,new AgeComparator());
                 break;
             case 3:
-                Collections.sort(studentList,new SexComparator());
+                Collections.sort(studentslist,new SexComparator());
                 break;
             case 4:
-                Collections.sort(studentList,new IdComparator());
+                Collections.sort(studentslist,new IdComparator());
                 break;
             default:
                 System.out.println("输入有误!");
@@ -232,8 +227,8 @@ public class StudentMain {
 
         System.out.println("学号     姓名   性别   年龄     出生年月");
         Student student;
-        for (int i = 0; i < studentList.size(); i++) {
-            student = studentList.get(i);
+        for (int i = 0; i < studentslist.size(); i++) {
+            student = studentslist.get(i);
             System.out.println(student.toString());
         }
     }
